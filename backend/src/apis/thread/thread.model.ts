@@ -1,5 +1,4 @@
 import {z} from 'zod'
-import {ThreadSchema} from "./thread.validator";
 import {sql} from "../../utils/database.utils";
 
 /**
@@ -11,6 +10,16 @@ import {sql} from "../../utils/database.utils";
  * @property threadDatetime {string} the thread's datetime
  * @property threadImageUrl {string} the thread's image url
  */
+export const ThreadSchema = z.object({
+    threadId: z.string({required_error: 'please provide a valid threadId or null', invalid_type_error:"threadId must be a uuid or null"}).uuid({message: 'please provide a valid uuid for threadId'}).nullable(),
+    threadProfileId: z.string({required_error: 'please provide a valid threadProfileId', invalid_type_error: "threadProfileId must be a uuid"}).uuid({message: 'please provide a valid uuid for threadProfileId'}),
+    threadReplyThreadId: z.string({required_error: 'please provide a valid threadReplyThreadId or null', invalid_type_error: "threadReplyThreadId must be a uuid"}).uuid({message: 'please provide a valid uuid for threadReplyThreadId'}).nullable(),
+    threadContent:
+      z.string({required_error: "threadContent is a required field"}).max(255, {message: 'please provide a valid threadContent'}),
+    threadDatetime:
+      z.coerce.date({required_error: 'please provide a valid threadDatetime or null', invalid_type_error: "thread date time is not a valid date"}).nullable(),
+    threadImageUrl:z.string({required_error: 'please provide a valid threadImageUrl or null', invalid_type_error: 'threadImageUrl must be a string or null'}).trim().url({message: 'please provide a valid URL for threadImageUrl'}).max(255, {message: 'please provide a valid threadImageUrl (max 255 characters)'}).nullable(),
+})
 export type Thread = z.infer<typeof ThreadSchema>
 
 /**

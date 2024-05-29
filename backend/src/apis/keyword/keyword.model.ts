@@ -1,8 +1,29 @@
 import {z} from 'zod'
-import {KeywordSchema} from "./keyword.validator"
+
 import {sql} from "../../utils/database.utils"
 
-// The shape of a keyword object
+/**
+ *
+ */
+export const KeywordSchema = z.object({
+    keywordId: z.string({
+        required_error: 'please provide a valid keywordId',
+        invalid_type_error: "keywordId is not the correct type"
+    })
+      .trim()
+      .uuid({
+          message: 'please provide a valid uuid for keywordId'
+      })
+      .nullable(),
+    keywordName: z.string({
+        required_error: 'please provide a valid keywordName',
+        invalid_type_error: "keywordName is not the correct type"
+    })
+      .min(1, {
+          message: 'keyword must be at least 1 character long'})
+      .max(32, {message: 'keyword must be at most 32 characters long'})
+      .trim()
+})
 export type Keyword = z.infer<typeof KeywordSchema>
 
 

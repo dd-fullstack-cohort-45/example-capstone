@@ -3,7 +3,8 @@ import { selectPrivateProfileByProfileActivationToken, updateProfile} from '../p
 import {Status} from '../../utils/interfaces/Status'
 
 import {zodErrorResponse} from '../../utils/response.utils'
-import {activationProfileSchema} from './activation.validator'
+import {z} from "zod";
+
 
 
 /**
@@ -13,7 +14,7 @@ import {activationProfileSchema} from './activation.validator'
  */
 export async function activationController(request: Request, response: Response, ): Promise<Response<Status>> {
     try {
-        const validationResult = activationProfileSchema.safeParse(request.params)
+        const validationResult = z.object({ activation: z.string().length(32, { message: 'please provide a valid profileActivationToken' }) }).safeParse(request.params)
         // if the validation is unsuccessful, return a preformatted response to the client
         if (!validationResult.success) {
             return zodErrorResponse(response, validationResult.error)

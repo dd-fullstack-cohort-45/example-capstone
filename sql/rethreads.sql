@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS thread (
     thread_datetime timestamptz NOT NULL DEFAULT NOW(),
     thread_image_url VARCHAR(255)
 );
+CREATE INDEX ON thread(thread_profile_id);
 
 CREATE TABLE IF NOT EXISTS follow (
     -- this is the profile that is doing the following
@@ -52,9 +53,14 @@ CREATE TABLE IF NOT EXISTS tag (
     PRIMARY KEY(tag_thread_id, tag_keyword_id)
 );
 
+CREATE INDEX ON tag(tag_keyword_id);
+CREATE INDEX ON tag(tag_thread_id);
+
 CREATE TABLE IF NOT EXISTS "like" (
     like_profile_id UUID NOT NULL REFERENCES profile(profile_id),
     like_thread_id UUID NOT NULL REFERENCES thread(thread_id) ON DELETE CASCADE,
     like_datetime timestamptz NOT NULL DEFAULT NOW(),
     PRIMARY KEY(like_profile_id, like_thread_id)
 );
+CREATE INDEX ON "like"(like_thread_id);
+CREATE INDEX ON "like"(like_profile_id);
