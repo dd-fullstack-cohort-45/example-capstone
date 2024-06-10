@@ -1,4 +1,11 @@
-export default function () {
+"use server"
+import {fetchAllThreads} from "@/utils/models/thread.model";
+import {ThreadCard} from "@/app/(index)/ThreadCard";
+
+export default async function () {
+	const threads = await fetchAllThreads()
+	console.log(threads)
+
 	return (
 		<>
 			<main className="container lg:w-2/3 grid pt-5 mx-auto">
@@ -51,6 +58,9 @@ export default function () {
 							</div>
 						</div>
 					</form>
+
+
+					{threads.map((thread) =>  <ThreadCard key={thread.threadId} thread={thread} />)}
 				</div>
 			</main>
 		</>
