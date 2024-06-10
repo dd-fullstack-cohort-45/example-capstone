@@ -5,9 +5,7 @@ import type { FC } from "react";
 import { HiMenuAlt1, HiX } from "react-icons/hi";
 import {isSmallScreen, useSidebarContext} from "@/utils/context/sidebar.context";
 
-export const TopNavbar: FC<Record<string, never>> = function () {
-	const { isCollapsed: isSidebarCollapsed, setCollapsed: setSidebarCollapsed } =
-		useSidebarContext();
+export  function TopNavbar() {
 
 	return (
 		<header>
@@ -18,18 +16,6 @@ export const TopNavbar: FC<Record<string, never>> = function () {
 				<div className="w-full p-3 pr-4">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center">
-							<button
-								aria-controls="sidebar"
-								aria-expanded
-								className="mr-2 cursor-pointer rounded p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700"
-								onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
-							>
-								{isSidebarCollapsed || !isSmallScreen() ? (
-									<HiMenuAlt1 className="h-6 w-6" />
-								) : (
-									<HiX className="h-6 w-6" />
-								)}
-							</button>
 							<Navbar.Brand href="/">
 								<span className="self-center whitespace-nowrap px-3 text-xl font-semibold dark:text-white">
                   Flowbite

@@ -6,19 +6,18 @@ import {twMerge} from "tailwind-merge";
 import React from "react";
 import {LayoutProps} from "@/utils/interfaces/NextComponent";
 import {TopNavbar} from "@/components/navigation/Navbar";
-import {DashboardSidebar} from "@/components/navigation/Sidebar";
+import {NavSidebar} from "@/components/navigation/Sidebar";
 
 
 
 
-export function LayoutContent({children}: LayoutProps) {
+
+export default function ({children}: LayoutProps) {
 	const {isCollapsed} = useSidebarContext()
 
 	return (
 		<>
-			<TopNavbar />
 			<div className="mt-16 flex items-start">
-				<DashboardSidebar />
 				<div
 					id="main-content"
 					className={twMerge(

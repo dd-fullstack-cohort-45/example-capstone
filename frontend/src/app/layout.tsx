@@ -5,9 +5,8 @@ import React from "react";
 
 import {Signika as FontSans} from 'next/font/google';
 import {cn} from "@/utils/tailwind.utils";
-import {SidebarProvider} from "@/utils/context/sidebar.context";
 import {theme} from "@/utils/theme.utils";
-import {LayoutContent} from "@/app/LayoutContent";
+
 
 
 
