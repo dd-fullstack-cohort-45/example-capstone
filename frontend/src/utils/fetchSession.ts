@@ -1,10 +1,12 @@
 "use server"
+{unstable_noStore()}
+import {unstable_noStore, unstable_noStore as noStore} from "next/cache";
 import {Profile, ProfileSchema} from "@/utils/models/profile.model";
 import {cookies} from "next/headers";
 import {jwtDecode} from "jwt-decode";
 
 
-
+unstable_noStore()
 
 export type Session = {
 	profile: Profile,
@@ -12,17 +14,21 @@ export type Session = {
 	exp: number
 }
 
+let session : Session|undefined = undefined
+
 const currentTimeInSeconds = new Date().getTime() / 1000
 
-export async function getSession(): Promise<Session | null> {
+export async function getSession(): Promise<Session|undefined > {
 
+
+	noStore()
 	const cookieStore = cookies()
 	const jwtToken = cookieStore.get("jwt-token")
-	if (jwtToken) {
-	return setJwtToken(jwtToken.value)
-
+	if (session === undefined &&  jwtToken) {
+		await setJwtToken(jwtToken.value)
+		return session
 	} else {
-		return null
+		return session
 	}
 
 }
@@ -31,30 +37,29 @@ export async function clearSession() {
 	const cookieStore = cookies()
 	cookieStore.delete("jwt-token")
 	cookieStore.delete("connect.sid")
-
+	session = undefined
 }
 
 
-function setJwtToken(jwtToken: string) : {profile: Profile, authorization: string, exp: number}| null {
+export async  function setJwtToken(jwtToken: string) {
 	try {
 		const  parsedJwtToken = jwtDecode(jwtToken) as any
 
 
 
 		if(parsedJwtToken &&  currentTimeInSeconds < parsedJwtToken.exp) {
-			return  {
+			session = {
 				profile: ProfileSchema.parse(parsedJwtToken.auth),
 				authorization: jwtToken,
 				exp: parsedJwtToken.exp
 			}
 
 		} else {
-			return null
+			session = undefined
 		}
 
 
 	} catch (error) {
-		throw  new Error("Invalid JWT Token")
+		session = undefined
 	}
 }
-

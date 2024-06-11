@@ -11,7 +11,7 @@ export default async function () {
 	console.log(threads)
 
 	const session = await getSession()
-	if(session === null) {
+	if(session === undefined) {
 		return  redirect('/sign-in')
 
 	}
