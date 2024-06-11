@@ -5,14 +5,14 @@ import {
     selectAllThreads, selectPageOfThreads,
     selectThreadByThreadId, selectThreadsByProfileName,
     selectThreadsByThreadProfileId,
-    Thread
+    Thread, ThreadSchema
 } from "./thread.model";
 import {Status} from "../../utils/interfaces/Status";
-import {PublicProfile} from "../profile/profile.model";
-import {ThreadSchema} from "./thread.validator";
+import {PublicProfile, PublicProfileSchema} from "../profile/profile.model";
+
 import {zodErrorResponse} from "../../utils/response.utils";
 import {z} from "zod";
-import {PublicProfileSchema} from "../profile/profile.validator";
+
 
 
 /**

@@ -22,7 +22,7 @@ export async function POST(request: Request){
 		const cookieStore = cookies()
 		cookieStore.set("jwt-token",
 			authorization,
-			{path: "/", maxAge:10_800_000, sameSite: "strict", httpOnly: true, secure: true, domain: "localhost"}
+			{path: "/", maxAge:10_800_000, sameSite: "strict", httpOnly: true}
 		)
 	}
 

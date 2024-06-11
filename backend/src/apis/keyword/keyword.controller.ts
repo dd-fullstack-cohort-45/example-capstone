@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
-import {KeywordSchema} from "./keyword.validator";
+
 import {zodErrorResponse} from "../../utils/response.utils";
 import {
-    insertKeyword,
+    insertKeyword, KeywordSchema,
     selectKeywordByKeywordId,
     selectKeywordByKeywordName,
     selectKeywordsByKeywordName

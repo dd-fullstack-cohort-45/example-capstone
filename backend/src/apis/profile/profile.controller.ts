@@ -1,13 +1,13 @@
 import {Request, Response} from "express";
 import {
-    PrivateProfile,
- selectPrivateProfileByProfileId,
+    PrivateProfile, PublicProfileSchema,
+    selectPrivateProfileByProfileId,
     selectPublicProfileByProfileId,
     selectPublicProfileByProfileName,
     selectPublicProfilesByProfileName, updateProfile
 } from "./profile.model";
 import {zodErrorResponse} from "../../utils/response.utils";
-import {PublicProfileSchema} from "./profile.validator";
+
 
 import {Status} from "../../utils/interfaces/Status";
 

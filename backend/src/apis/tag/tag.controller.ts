@@ -1,12 +1,12 @@
 import {Request, Response} from "express";
-import {TagSchema} from "./tag.validator";
+
 import {zodErrorResponse} from "../../utils/response.utils";
 import {
     deleteTagByTagKeywordIdAndTagThreadId,
     insertTag,
     selectTagByTagKeywordIdAndTagThreadId,
     selectTagsByTagKeywordId,
-    selectTagsByTagThreadId
+    selectTagsByTagThreadId, TagSchema
 } from "./tag.model";
 import {Status} from "../../utils/interfaces/Status";
 

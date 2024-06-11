@@ -1,14 +1,14 @@
 import {Request, Response} from 'express'
 import {
     deleteFollow,
-    Follow,
+    Follow, FollowSchema,
     insertFollow, selectFollowByFollowId,
     selectFollowsByFollowFollowingProfileId,
     selectFollowsByFollowProfileId
 } from "./follow.model";
 import {Status} from "../../utils/interfaces/Status";
 import {zodErrorResponse} from "../../utils/response.utils";
-import {FollowSchema} from "./follow.validator";
+
 import {z} from "zod";
 
 

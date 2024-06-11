@@ -2,14 +2,14 @@ import {Request, Response} from 'express'
 import {
     deleteLike,
     insertLike,
-    Like,
+    Like, LikeSchema,
     selectLikeByLikeId,
     selectLikesByLikeProfileId,
     selectLikesByLikeThreadId
 } from "./like.model";
 import {PublicProfile} from "../profile/profile.model";
 import {Status} from "../../utils/interfaces/Status";
-import {LikeSchema} from "./like.validator";
+
 import {zodErrorResponse} from "../../utils/response.utils";
 import {z} from "zod";
 
