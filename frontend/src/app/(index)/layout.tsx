@@ -17,7 +17,8 @@ export default function ({children}: LayoutProps) {
 
 	return (
 		<>
-			<div className="mt-16 flex items-start">
+			<NavSidebar />
+			<div className="flex items-start">
 				<div
 					id="main-content"
 					className={twMerge(

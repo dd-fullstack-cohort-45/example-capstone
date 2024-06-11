@@ -4,6 +4,7 @@ import {PageProps} from "@/utils/interfaces/NextComponent";
 import Image from "next/image";
 import {Button, Label, TextInput} from "flowbite-react";
 import {SignUpForm} from "@/app/sign-in/SignUpForm";
+import {SignInForm} from "@/app/sign-in/SignInForm";
 
 
 export default function Home(props: PageProps) {
@@ -18,23 +19,7 @@ export default function Home(props: PageProps) {
 					</div>
 
 					<div className=" md:h-fit p-5  md:p-2 md:ms-4  md:w-2/3  mr-auto md:col-span-6">
-						<form className="flex  flex-col mx-auto gap-4">
-							<h1 className="text-3xl font-bold">Welcome back.</h1>
-							<div>
-								<div className="mb-2 block">
-									<Label htmlFor="email1" value="Your email"/>
-								</div>
-								<TextInput id="email1" type="email" placeholder="name@flowbite.com" required/>
-							</div>
-							<div>
-								<div className="mb-2 block">
-									<Label htmlFor="password1" value="Your password"/>
-								</div>
-								<TextInput id="password1" type="password" required/>
-							</div>
-							<SignUpForm />
-							<Button type="submit">Submit</Button>
-						</form>
+						<SignInForm />
 					</div>
 
 
