@@ -24,7 +24,7 @@ export default async function () {
 				<div className="col-span-full p-0 border border-base-content">
 					<h1 className="text-3x p-4 font-bold">Welcome  {profile.profileName}</h1>
 					<ThreadForm session={session} />
-					{threads.map((thread) =>  <p>{thread.threadContent}</p>)}
+					{threads.map((thread) => <ThreadCard thread={thread} key={thread.threadId} />)}
 				</div>
 			</main>
 		</>
