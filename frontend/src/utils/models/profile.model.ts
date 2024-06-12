@@ -31,7 +31,7 @@ export type Profile = z.infer<typeof ProfileSchema>
 
 
 export async function fetchProfileByProfileId(profileId: string): Promise<Profile> {
-	const { data } = await fetch(`${process.env.PUBLIC_API_URL}/apis/profile/${profileId}`, {
+	const {data} = await fetch(`${process.env.PUBLIC_API_URL}/apis/profile/${profileId}`, {
 		method: "get",
 		headers: {
 			'Content-Type': 'application/json',
@@ -47,5 +47,23 @@ export async function fetchProfileByProfileId(profileId: string): Promise<Profil
 	})
 
 	return ProfileSchema.parse(data)
+}
 
+export async function fetchProfileByProfileName(profileName: string): Promise<Profile|null> {
+	const {data} = await fetch(`${process.env.PUBLIC_API_URL}/apis/profile/profileName/${profileName}`, {
+		method: "get",
+		headers: {
+			'Content-Type': 'application/json',
+		},
+
+	}).then((response: Response) => {
+		if (!response.ok) {
+			throw new Error('Error fetching profile')
+		} else {
+			return response.json()
+		}
+
+	})
+
+	return ProfileSchema.nullable().parse(data)
 }
