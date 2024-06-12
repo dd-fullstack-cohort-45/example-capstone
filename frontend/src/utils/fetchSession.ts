@@ -1,12 +1,12 @@
 "use server"
-{unstable_noStore()}
-import {unstable_noStore, unstable_noStore as noStore} from "next/cache";
+unstable_noStore()
+import {unstable_noStore} from "next/cache";
 import {Profile, ProfileSchema} from "@/utils/models/profile.model";
 import {cookies} from "next/headers";
 import {jwtDecode} from "jwt-decode";
 
 
-unstable_noStore()
+
 
 export type Session = {
 	profile: Profile,
@@ -21,7 +21,7 @@ const currentTimeInSeconds = new Date().getTime() / 1000
 export async function getSession(): Promise<Session|undefined > {
 
 
-	noStore()
+
 	const cookieStore = cookies()
 	const jwtToken = cookieStore.get("jwt-token")
 	if (session === undefined &&  jwtToken) {
