@@ -24,6 +24,7 @@ export async function getSession(): Promise<Session|undefined > {
 
 	const cookieStore = cookies()
 	const jwtToken = cookieStore.get("jwt-token")
+	console.log(jwtToken)
 	if (session === undefined &&  jwtToken) {
 		await setJwtToken(jwtToken.value)
 		return session
@@ -44,8 +45,7 @@ export async function clearSession() {
 export async  function setJwtToken(jwtToken: string) {
 	try {
 		const  parsedJwtToken = jwtDecode(jwtToken) as any
-
-
+		console.log(parsedJwtToken)
 
 		if(parsedJwtToken &&  currentTimeInSeconds < parsedJwtToken.exp) {
 			session = {

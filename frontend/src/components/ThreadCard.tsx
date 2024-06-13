@@ -16,7 +16,7 @@ export async function ThreadCard(props: Props) {
 					<p className="inline-flex items-center mr-3 text-sm font-semibold"><img
 						className="mr-2 w-6 h-6 rounded-full"
 						// src={profile.profileImageUrl ?? '/profile.png'}
-						alt="Michael Gough"/>{profile.profileName}</p>
+						/>{profile.profileName}</p>
 					<p className="text-sm text-gray-600 dark:text-gray-400">
 						<time dateTime="2022-02-08"
 						      title="February 8th, 2022">{thread.threadDatetime?.toLocaleString()}

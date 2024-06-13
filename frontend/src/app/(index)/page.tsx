@@ -8,7 +8,6 @@ import {Suspense} from "react";
 
 export default async function () {
 	const threads = await fetchAllThreads()
-	console.log(threads)
 
 	const session = await getSession()
 	if(session === undefined) {

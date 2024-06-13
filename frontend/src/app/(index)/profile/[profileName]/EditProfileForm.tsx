@@ -1,4 +1,5 @@
-import {Profile, ProfileSchema} from "@/utils/models/profile.model";
+'use client'
+import {fetchProfileByProfileName, Profile, ProfileSchema} from "@/utils/models/profile.model";
 import {Button, Label, Modal, ModalBody, ModalHeader, TextInput} from "flowbite-react";
 import React from "react";
 import {Formik, FormikHelpers, FormikProps} from "formik";
@@ -7,6 +8,9 @@ import {z} from "zod";
 import {Session} from "@/utils/fetchSession";
 import {ImageUploadDropZone} from "@/components/ImageUploadDropZone";
 import {useRouter} from "next/navigation";
+import {DisplayError} from "@/components/DisplayError";
+import {DisplayStatus} from "@/components/DisplayStatus";
+import {FormDebugger} from "@/components/FormDebugger";
 
 type Props = {
 	authorization: string|undefined,
@@ -28,16 +32,7 @@ const FormSchema = ProfileSchema
 	.extend({
 		profileImageUrl: z
 			.any()
-
-			// To not allow files other than images
-			.refine((files: any) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
-				message: '.jpg, .jpeg, .png and .webp files are accepted.',
-			})
-			// To not allow files larger than 2MB
-			.refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, {
-				message: `Max file size is 2MB.`,
-			})
-			.nullable(),
+			.optional()
 	})
 
 type FormValues = z.infer<typeof FormSchema>
@@ -45,19 +40,44 @@ type FormValues = z.infer<typeof FormSchema>
 export function EditProfileForm(props: Props) {
 	const {authorization, profile} = props
 
+	const router = useRouter()
+
 	if (authorization === undefined ) {
 		return <></>
 	}
 
-	const handleSubmit = (values: FormValues, actions: FormikHelpers<FormValues>) => {
+	function handleSubmit(values: FormValues, actions: FormikHelpers<FormValues>) {
 		const {setStatus, resetForm} = actions
-		const router = useRouter()
+
+
+		if(profile.profileName === values.profileName) {
+			preformUpdate()
+		} else {
+			fetch(`/apis/profile/profileName/${values.profileName}`).then(response => response.json())
+				.then((json) => {
+					if(json.data === null) {
+						preformUpdate()
+					}
+					else {
+						setStatus({type: 'failure', message: 'Profile name already exists'})
+					}
+				})
+		}
 
 
 
 
+		function preformUpdate() {
+			if(values.profileImageUrl) {
+				uploadImage(values.profileImageUrl)
+			}
+			else {
+				profile.profileName = values.profileName
+				profile.profileAbout = values.profileAbout
+				submitUpdatedProfile(profile)
+			}
 
-
+		}
 		function submitUpdatedProfile(profile: Profile) {
 			// This function should send a request to the backend to update the profile regardless if an image was uploaded or not
 			fetch(`/apis/profile/${profile.profileId}`, {
@@ -77,15 +97,22 @@ export function EditProfileForm(props: Props) {
 				let type = 'failure'
 				if (json.status === 200) {
 					resetForm()
-					router.refresh()
 					type = 'success'
+					if(profile.profileName !== values.profileName) {
+						setTimeout(() => {
+							router.push(`/profile/${values.profileName}`)
+							}
+						)
+					} else {
+						router.refresh()
+					}
 				}
 				setStatus({type, message: json.message})
 			})
 		}
 
 		function uploadImage(profileImageUrl: any) {
-			fetch("/apis/image/upload/single",{
+			fetch("/apis/image/",{
 				method: "POST",
 				headers: {
 					'Authorization': authorization ?? ""
@@ -93,14 +120,15 @@ export function EditProfileForm(props: Props) {
 				body: profileImageUrl
 			})
 				.then(response => response.json())
-				.then(data => {
-					if(data.status !== 200) {
-						setStatus({type: 'failure', message: data.message})
+				.then(json => {
+					if(json.status !== 200) {
+						setStatus({type: 'failure', message: json.message})
 					}
 					else {
-						profile.profileImageUrl = data.imageUrl
+						profile.profileImageUrl = json.message
 						profile.profileName = values.profileName
 						profile.profileAbout = values.profileAbout
+						console.log(profile)
 						submitUpdatedProfile(profile)
 					}
 				})
@@ -108,7 +136,6 @@ export function EditProfileForm(props: Props) {
 
 		}
 	}
-
 
 	return (
 		<Formik
@@ -128,7 +155,6 @@ export function EditProfileFormContent(props: FormikProps<FormValues>) {
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const [selectedImage, setSelectedImage] = React.useState<string|null>(null)
 
-
 	return (
 		<>
 			<Button
@@ -143,7 +169,7 @@ export function EditProfileFormContent(props: FormikProps<FormValues>) {
 				<ModalHeader/>
 				<ModalBody>
 					<div className="space-y-2">
-						<form className="flex min-h-auto gap-4 min-w-full flex-col grow">
+						<form onSubmit={handleSubmit} className="flex min-h-auto gap-4 min-w-full flex-col grow">
 							<h1 className="text-3xl font-bold">Edit Profile</h1>
 							<div>
 							</div>
@@ -151,20 +177,43 @@ export function EditProfileFormContent(props: FormikProps<FormValues>) {
 								<div className="mb-2 block">
 									<Label htmlFor="profileName" value="name"/>
 								</div>
-								<TextInput autoComplete='username' id="profileName" type="text" required/>
+								<TextInput
+									autoComplete='username'
+									name={'profileName'}
+									id="profileName"
+									type="text"
+									required
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.profileName}
+								/>
+								<DisplayError errors={errors} touched={touched} field={'profileName'}/>
 							</div>
+
 							<div>
 								<div className="mb-2 block">
 									<Label htmlFor="profileAbout" value={"Profile About"}/>
 								</div>
-								<TextInput id="profileAbout" type="text"/>
+								<TextInput
+									id="profileAbout"
+									type="text"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.profileAbout ?? ""}
+									name={'profileAbout'}
+								/>
+								<DisplayError errors={errors} touched={touched} field={'profileName'}/>
 							</div>
+
 							<ImageUploadDropZone
 								formikProps={{ handleBlur, handleChange, setFieldValue, fieldValue: 'profileImageUrl'}}
 								setSelectedImage={setSelectedImage}
 								/>
 							<Button type="submit"> Submit</Button>
+							<Button type="reset"> Reset</Button>
 						</form>
+						<DisplayStatus status={status} />
+						<FormDebugger {...props} />
 					</div>
 				</ModalBody>
 			</Modal>

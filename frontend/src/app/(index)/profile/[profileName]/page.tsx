@@ -3,6 +3,7 @@ import {fetchProfileByProfileName, Profile} from "@/utils/models/profile.model";
 import {fetchThreadsByProfileId, Thread} from "@/utils/models/thread.model";
 import {redirect} from "next/navigation";
 import {ThreadCard} from "@/components/ThreadCard";
+import {EditProfileForm} from "@/app/(index)/profile/[profileName]/EditProfileForm";
 
 type Props = {
 	params:{
@@ -24,7 +25,12 @@ const signedInUser = session?.profile
 	return (
 		<>
 			<main className="container lg:w-2/3 grid mx-auto">
-				<h1> Welcome to the profile page of {profile.profileName}</h1>
+				<div className="flex flex-col justify-center items-center">
+					<h1 className="text-3xl p-4 font-bold">{profile.profileName}</h1>
+					{isSignedInUser &&
+						<EditProfileForm authorization={session?.authorization} profile={profile} />
+					}
+				</div>
 
 				{threads.map((thread) => <ThreadCard thread={thread} key={thread.threadId} />)}
 			</main>
