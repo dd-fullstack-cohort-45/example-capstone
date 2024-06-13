@@ -1,6 +1,6 @@
 "use server"
 import {fetchAllThreads} from "@/utils/models/thread.model";
-import {ThreadCard} from "@/app/(index)/ThreadCard";
+import {ThreadCard} from "@/components/ThreadCard";
 import {getSession} from "@/utils/fetchSession";
 import {redirect} from "next/navigation";
 import {ThreadForm} from "@/app/(index)/ThreadForm";

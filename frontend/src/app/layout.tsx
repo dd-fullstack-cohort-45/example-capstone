@@ -30,7 +30,7 @@ const fontSans = FontSans({
 export default function RootLayout(props : RootLayoutProps) {
 	const { children } = props
 	return (
-		<html suppressHydrationWarning>
+		<html suppressHydrationWarning={true}>
 		<head>
 
 

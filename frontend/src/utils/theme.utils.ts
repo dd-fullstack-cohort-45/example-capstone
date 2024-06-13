@@ -5,7 +5,7 @@ export const theme: CustomFlowbiteTheme = {
 		root: {
 			base: "h-full bg-gray-50",
 			inner:
-				"h-full overflow-y-auto overflow-x-hidden bg-white py-4 px-3 dark:bg-gray-800",
+				"h-full overflow-y-auto overflow-x-hidden bg-amber-400 py-4 px-3 dark:bg-gray-800",
 		},
 		collapse: {
 			list: "space-y-2 py-2 list-none",

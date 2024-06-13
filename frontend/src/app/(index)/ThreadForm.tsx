@@ -7,7 +7,7 @@ import {z} from "zod";
 import {Formik, FormikHelpers, FormikProps} from "formik";
 import {setHeaders} from "@/utils/setHeaders";
 import {DisplayError} from "@/components/DisplayError";
-import {DisplayStatus} from "@/components/navigation/DisplayStatus";
+import {DisplayStatus} from "@/components/DisplayStatus";
 import {toFormikValidationSchema} from "zod-formik-adapter";
 import {FormDebugger} from "@/components/FormDebugger";
 

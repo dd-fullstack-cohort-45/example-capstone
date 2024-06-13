@@ -10,7 +10,7 @@ import {useRouter} from "next/navigation";
 import {toFormikValidationSchema} from "zod-formik-adapter";
 import {FormDebugger} from "@/components/FormDebugger";
 import {DisplayError} from "@/components/DisplayError";
-import {DisplayStatus} from "@/components/navigation/DisplayStatus";
+import {DisplayStatus} from "@/components/DisplayStatus";
 
 const formSchema =  z.object({
 	profilePassword: z.string({
@@ -38,7 +38,7 @@ export function SignInForm() {
 
 
 
-	const handleSubmit = async (values: FormSchema, actions: FormikHelpers<FormSchema>) => {
+	const handleSubmit =  (values: FormSchema, actions: FormikHelpers<FormSchema>) => {
 		const {profileEmail, profilePassword} = values
 		const {setStatus, resetForm} = actions
 
