@@ -6,7 +6,7 @@ import {Formik, FormikHelpers, FormikProps} from "formik";
 import {toFormikValidationSchema} from "zod-formik-adapter";
 import {z} from "zod";
 import {Session} from "@/utils/fetchSession";
-import {ImageUploadDropZone} from "@/components/ImageUploadDropZone";
+import {DisplayUploadErrorProps, ImageUploadDropZone} from "@/components/ImageUploadDropZone";
 import {useRouter} from "next/navigation";
 import {DisplayError} from "@/components/DisplayError";
 import {DisplayStatus} from "@/components/DisplayStatus";
@@ -18,14 +18,7 @@ type Props = {
 }
 
 
-const MAX_FILE_SIZE = 2000000
-const ACCEPTED_IMAGE_TYPES = [
-	'image/jpeg',
-	'image/jpg',
-	'image/png',
-	'image/webp',
-	'image/svg+xml',
-]
+
 
 const FormSchema = ProfileSchema
 	.pick({profileName: true, profileAbout: true})
@@ -150,7 +143,7 @@ export function EditProfileForm(props: Props) {
 
 
 export function EditProfileFormContent(props: FormikProps<FormValues>) {
-	const {status, values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue} = props
+	const {status, values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue, setFieldError, setFieldTouched} = props
 
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const [selectedImage, setSelectedImage] = React.useState<string|null>(null)
@@ -206,11 +199,14 @@ export function EditProfileFormContent(props: FormikProps<FormValues>) {
 							</div>
 
 							<ImageUploadDropZone
-								formikProps={{ handleBlur, handleChange, setFieldValue, fieldValue: 'profileImageUrl'}}
+								formikProps={{ setFieldError, setFieldTouched ,handleBlur, handleChange, setFieldValue, fieldValue: 'profileImageUrl'}}
 								setSelectedImage={setSelectedImage}
 								/>
-							<Button type="submit"> Submit</Button>
-							<Button type="reset"> Reset</Button>
+							<DisplayUploadErrorProps errors={errors} field={'profileImageUrl'}/>
+							<div className={"flex"}>
+								<Button className={"mr-1"} type="submit"> Submit</Button>
+								<Button  className={'ml-1'} color={"red"} type="reset"> Reset</Button>
+							</div>
 						</form>
 						<DisplayStatus status={status} />
 						<FormDebugger {...props} />
