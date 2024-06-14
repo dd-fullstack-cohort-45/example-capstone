@@ -60,6 +60,8 @@ export async  function setJwtToken(jwtToken: string) {
 
 
 	} catch (error) {
+		console.error(error)
+		throw new Error('Invalid jwt token')
 		session = undefined
 	}
 }

@@ -57,9 +57,6 @@ export function EditProfileForm(props: Props) {
 				})
 		}
 
-
-
-
 		function preformUpdate() {
 			if(values.profileImageUrl) {
 				uploadImage(values.profileImageUrl)
@@ -125,14 +122,14 @@ export function EditProfileForm(props: Props) {
 						submitUpdatedProfile(profile)
 					}
 				})
-
-
 		}
 	}
 
 	return (
 		<Formik
-			initialValues={{profileAbout: props.profile.profileAbout, profileName: props.profile.profileName}}
+			initialValues={
+			{
+				profileAbout: props.profile.profileAbout, profileName: props.profile.profileName}}
 			onSubmit={handleSubmit}
 			validationSchema={toFormikValidationSchema(FormSchema)}
 		>
